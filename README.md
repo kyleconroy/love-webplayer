@@ -1,17 +1,15 @@
-Love2D WebPlayer
-started 2012-03 ghoulsblade@schattenkind.net
+# Love2D WebPlayer
+
 demos: http://ghoulsblade.schattenkind.net/love-webplayer/
-github: https://github.com/ghoulsblade/love-webplayer
-infos: http://ghoulsblade.schattenkind.net/wiki/index.php/Love-WebPlayer
 love-forum: https://love2d.org/forums/viewtopic.php?f=5&t=8487
 
-goal : play games made for love2d inside the browser without plugins (webgl+javascript capable browser required)
-usage: unpack .love file (rename to .zip), add the .js files and the index.html from love-webplayer, upload the whole folder to webserver, open in browser, play
-tech : webgl for display, github.com/mherkender/lua.js to run lua code in javascript
+Play games made for love2d inside the browser without plugins (webgl+javascript
+capable browser required)
 
-love2d is a lua based 2d game engine : http://love2d.org/ 
-lua-parser.js is a lua interpreter/converter in javascript from https://github.com/mherkender/lua.js (added LuaBootStrap call)
-Box2dWeb-2.1.a.3.min.js is a javascript port of the Box2D engine from http://code.google.com/p/box2dweb/
+## Installation
+
+Unpack .love file (rename to .zip), add the .js files and the index.html from
+love-webplayer, upload the whole folder to webserver, open in browser, play
 
 not-yet-implemented (incomplete list) 
 * love 0.8 api (currently webplayer is mostly for 0.7, to test some 0.8 stuff add to index.html : <body onload="Love_Enable_Experimental_080(); ...>
