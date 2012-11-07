@@ -114,12 +114,16 @@ function BasicGeo_Draw (mode) {
 	//~ assert(mi_BasicGeo_Vertices <= kMaxBasicGeoVertices);
 	if (!(mi_BasicGeo_Vertices <= kMaxBasicGeoVertices)) alert("BasicGeo_Draw : incomplete");
 	//~ MainPrint(mFB_BasicGeo.slice(0,mi_BasicGeo_Vertices*2));
+	
 	UpdateGlFloatBufferLen(gl,mVB_BasicGeo,mFB_BasicGeo,mi_BasicGeo_Vertices*2,gl.DYNAMIC_DRAW);
 	
 	gl.bindTexture(gl.TEXTURE_2D, null); gLastGLTexture = null;
 	setVertexBuffersToCustom(mVB_BasicGeo,mVB_BasicGeo_TexCoord);
 	gl.uniform4f(shaderProgram.uFragOverrideAddColor,1,1,1,1);
-	gl.drawArrays(mode, 0, mi_BasicGeo_Vertices);
+	// gl.flush(); // finish/swapbuffer (optional?)   didn't help webgl OUT_OF_MEMORY error
+	// MyCheckGLError("BasicGeo_Draw 05 mi_BasicGeo_Vertices="+String(mi_BasicGeo_Vertices));
+	gl.drawArrays(mode, 0, mi_BasicGeo_Vertices); //  gl.getError() : 1285 : OUT_OF_MEMORY   here with mi_BasicGeo_Vertices=2
+	// MyCheckGLError("BasicGeo_Draw 06 mi_BasicGeo_Vertices="+String(mi_BasicGeo_Vertices));  
 	gl.uniform4f(shaderProgram.uFragOverrideAddColor,0,0,0,0);
 }
 
@@ -162,6 +166,17 @@ function renderCircle(mode, x, y, radius, segments ) {
 	BasicGeo_Prepare(segments);
 	for (var i=0;i<segments;++i) {
 		var ang = Math_PI * 2 * (i) / (segments);
+		var x1 = x + radius * sin(ang);
+		var y1 = y + radius * cos(ang);
+		BasicGeo_Vertex(x1,y1);
+	}
+	BasicGeo_Draw((mode == DrawMode.FILL) ? gl.TRIANGLE_FAN : gl.LINE_LOOP);
+}
+
+function renderArc(mode, x, y, radius, angle1, angle2, segments ) {
+	BasicGeo_Prepare(segments);
+	for (var i=0;i<segments;++i) {
+		var ang = -0.5*Math_PI + angle1 + (angle2 - angle1) * (i) / (segments-1); // TODO : not yet tested
 		var x1 = x + radius * sin(ang);
 		var y1 = y + radius * cos(ang);
 		BasicGeo_Vertex(x1,y1);
